@@ -1,0 +1,22 @@
+import pandas as pd
+import matplotlib.pyplot as plot
+
+df=pd.read_csv('Salaries.csv',low_memory=False)
+
+df=df.dropna(subset=['BasePay', 'OvertimePay','TotalPayBenefits'])
+df['BasePay'] = pd.to_numeric(df['BasePay'], errors='coerce')
+df['OvertimePay'] = pd.to_numeric(df['OvertimePay'], errors='coerce')
+
+df_temp= df.groupby(df.Year)['OvertimePay','BasePay','TotalPayBenefits','Year'].transform('mean')
+df_temp=df_temp.drop_duplicates(subset="Year")
+
+df_temp.plot(x="Year", y=['BasePay','OvertimePay','TotalPayBenefits'], kind='bar',width = .7)
+plot.legend(['Base Mean', 'Overtime Mean','Totalpay Mean'])
+plot.title('Program 10 Problem 1')
+plot.xlabel('Year')
+plot.ylabel('Amount')
+plot.xticks(rotation = 0)
+
+
+
+plot.savefig('James_Rozell_program10_1.png', dpi = 300)
